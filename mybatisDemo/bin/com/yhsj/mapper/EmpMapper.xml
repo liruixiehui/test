@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhsj.mapper.EmpMapper">
+   <resultMap type="Emp" id="EmpMap">
+      <id property="empno" column="EMPNO" javaType="java.lang.Integer"/>
+      <result property="ename" column="ENAME" javaType="java.lang.String"/>
+      <result property="job" column="JOB" javaType="java.lang.String"/>
+      <result property="mgr" column="MGR" javaType="java.lang.Integer"/>
+      <result property="hiredate" column="HIREDATE" javaType="java.sql.Date"/>
+      <result property="sal"  column="SAL" javaType="java.lang.Double"/>
+      <result property="comm"  column="COMM" javaType="java.lang.Double"/>
+      <result property="deptno" column="DEPTNO" javaType="java.lang.Integer"/>
+   </resultMap>
+   
+   <insert id="saveEmp" keyProperty="empno">
+     insert into emp values(#{empno},#{ename},#{job},#{mgr},#{hiredate},#{comm},#{deptno},#{sal})
+   </insert>
+   <delete id="deleteEmp" parameterType="int">
+       delete from emp where empno = #{empno}
+   </delete>
+   <update id="updateEmp">
+       update emp set comm =#{comm} where empno = #{empno}
+   </update>
+   <select id="findEmpById" parameterType="int" resultMap="EmpMap">
+       select * from emp where empno = #{empno}
+   </select>
+   <select id="findAll" resultMap="EmpMap">
+       select * from emp
+   </select>
+   
+   
+   <update id="updateEmp1">
+       update emp 
+       <set>
+           <if test="ename !=null and ename !=''">ename=#{ename},</if>
+           <if test="sal !=null and sal>0">sal=#{sal}</if>
+       </set>
+       
+       where empno = #{empno}
+   </update>
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   <select id="findEmpByEname" resultMap="EmpMap">
+       select * from emp where 1=1
+       <if test="ename !=null and ename !=''">
+          and ename like '%${ename}%'
+       </if>
+       <if test="sal > 20">
+           and sal >#{sal}
+       </if>
+       
+   </select>
+   
+   <select id="findEmpByWhere" resultMap="EmpMap">
+       select * from emp 
+       <where>
+           <if test="ename !=null and ename !=''">
+            and ename like '%${ename}%'
+           </if>
+           <if test="sal > 20">
+           and sal >#{sal}
+            </if>
+       </where>
+   </select>
+  
+   
+   
+   
+   
+    <select id="findEmpByChoose" resultMap="EmpMap">
+        select * from emp
+        <where>
+            <choose>
+                <when test="ename != null and ename !=''">
+                     and ename like '%${ename}%'
+                </when>
+                <when test="sal > 20">
+                    and sal >#{sal}
+                </when>
+                <otherwise>
+                    and 1!=1
+                </otherwise>
+                
+            </choose>
+        </where>
+        
+    </select>
+    
+    
+    <select id="findEmpByForeach" resultMap="EmpMap">
+        select * from emp
+        <if test="array !=null and array.length !=0">
+            where empno in 
+            <foreach collection="array" item="empno" open="(" close=")" separator=",">
+                #{empno}
+            </foreach>
+            
+        </if>
+    </select>
+    
+    <select id="findEmpByForeachList" resultMap="EmpMap">
+        select * from emp
+        <if test="list !=null and list.size !=0">
+            where empno in
+            <foreach collection="list" item="empno" open="(" close=")" separator=",">
+                #{empno}
+            </foreach>
+            
+        </if>
+        
+    </select>
+    
+        <select id="findEmpByForeachList1" resultMap="EmpMap">
+          <include refid="selectHead"></include>
+        <if test="list !=null and list.size !=0">
+            where empno in
+            <foreach collection="list" item="emp" open="(" close=")" separator=",">
+                #{emp.empno}
+            </foreach>
+            
+        </if>
+        
+    </select>
+    
+    
+        
+     <sql id="selectHead">
+         select * from emp
+     </sql>
+    
+    
+    
+    
+    
+   
+   
+   
+   
+</mapper>

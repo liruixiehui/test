@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhsj.mapper.CountryMapper">
+
+<!-- 
+   <resultMap type="Country" id="countryMap">
+      <id property="cId" column="cid" javaType="java.lang.Integer"/>
+      <result property="cName" column="cname" javaType="java.lang.String"/>
+      <collection property="ministers" ofType="Minister">
+         <id column="mid" property="mId"/>
+         <result column="mname" property="mName"/>
+      </collection>
+   </resultMap>
+   <select id="findCountryById" resultMap="countryMap">
+      select cid,cname,mid,mname from country ,minister where cid =#{cId} and cid = countryId
+   </select>
+   
+  -->
+  
+  
+  <!-- -->
+   <resultMap type="Country" id="countryMap">
+      <id property="cId" column="cid" javaType="java.lang.Integer"></id>
+      <result property="cName" column="cname" javaType="java.lang.String"/>
+      <collection property="ministers" ofType="Minister" select="selectMinisterByCountry" column="cid"></collection>
+      
+   </resultMap>
+   <select id="selectMinisterByCountry" resultType="Minister">
+      select mid,mname from minister where countryId = #{cid}
+   </select>
+   <select id="selectCountryById" resultMap="countryMap">
+      select cid,cname from country where cid = #{cid}
+   </select>
+    
+    
+    
+   
+   
+   
+</mapper>
