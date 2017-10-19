@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhsj.mapper.EmpMapper">
+   <resultMap type="Emp" id="EmpMap">
+      <id property="empno" column="EMPNO" javaType="java.lang.Integer"/>
+      <result property="ename" column="ENAME" javaType="java.lang.String"/>
+      <result property="job" column="JOB" javaType="java.lang.String"/>
+      <result property="mgr" column="MGR" javaType="java.lang.Integer"/>
+      <result property="hiredate" column="HIREDATE" javaType="java.sql.Date"/>
+      <result property="sal"  column="SAL" javaType="java.lang.Double"/>
+       <result property="comm"  column="COMM" javaType="java.lang.Double"/>
+       <result property="deptno" column="DEPTNO" javaType="java.lang.Integer"/>
+   </resultMap>
+   
+   <insert id="saveEmp" keyProperty="empno">
+     insert into emp values(#{empno},#{ename},#{job},#{mgr},#{hiredate},#{sal},#{comm},#{deptno})
+   </insert>
+
+</mapper>
